@@ -1,6 +1,7 @@
 import pytest
 import pandas as pd
-from analyze_cashflow import calculate_metrics, identify_high_expenses
+import os
+from analyze_cashflow import calculate_metrics, identify_high_expenses, generate_expenses_chart
 
 @pytest.fixture
 def sample_data():
@@ -32,3 +33,9 @@ def test_identify_high_expenses_custom_threshold(sample_data):
     assert 'Facilities' in high_expenses
     assert high_expenses['Facilities'] == 1350.00
     assert 'Marketing' not in high_expenses
+
+def test_generate_expenses_chart(sample_data, tmp_path):
+    chart_file = tmp_path / "test_chart.png"
+    generate_expenses_chart(sample_data, str(chart_file))
+    assert chart_file.exists()
+
